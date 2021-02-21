@@ -10,7 +10,7 @@ Not even alpha... Currently works with MicroPython, planning a CircuitPython imp
 
 ## Install
 
-Copy the [rbgkeypad code](https://github.com/martinohanlon/pico-rgbkeypad/tree/main/rgbkeypad) into your program.
+Copy the [rbgkeypad code](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad/rgbkeypad.py) into your program.
 
 ## Usage
 

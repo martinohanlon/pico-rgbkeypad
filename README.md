@@ -14,6 +14,8 @@ Copy the [rbgkeypad code](https://github.com/martinohanlon/pico-rgbkeypad/blob/m
 
 ## Usage
 
+> Below is some typical use cases and examples for using the `RGBKeypad` class. See the [API](API.md) documentation for more information.
+
 Create a keypad object.
 
 ```python

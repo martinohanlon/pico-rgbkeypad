@@ -2,11 +2,26 @@
 
 A Python class for controlling the [Pimoroni RGB Keypad](https://shop.pimoroni.com/products/pico-rgb-keypad-base) for the [Raspberry Pi Pico](https://www.raspberrypi.org/documentation/pico/getting-started/).
 
+Compatible with MicroPython and CircuitPython.
+
+```python
+keypad = RGBKeypad()
+
+# make all the keys red
+keypad.color = (255, 0, 0)
+
+# turn a key red when pressed
+while True:
+    for key in keypad.keys:
+        if key.is_pressed():
+            key.color = (0, 0, 255)
+```
+
 ![pimoroni rgb keypad](https://cdn.shopify.com/s/files/1/0174/1800/products/pico-addons-2_1024x1024.jpg?v=1611177905)
 
 # Status
 
-Not even alpha... Currently works with MicroPython, planning a CircuitPython implementation. Documentation, particularly how to use and API needs a lot more work.
+Beta - version 0.1
 
 ## Install
 
@@ -112,3 +127,5 @@ Alternatively a list of all the keys pressed status can be obtained using the ke
 keys_pressed = keypad.get_keys_pressed()
 print(keys_pressed)
 ```
+
+## Example

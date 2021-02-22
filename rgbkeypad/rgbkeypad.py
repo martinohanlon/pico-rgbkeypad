@@ -1,13 +1,70 @@
-from machine import Pin, I2C, SPI
+MICROPYTHON = True
+try:
+    import machine
+except ImportError:
+    MICROPYTHON = False
+
+CIRCUITPYTHON = True
+try:
+    import board
+    import busio
+    import digitalio
+except ImportError:
+    CIRCUITPYTHON = False
+
+if not MICROPYTHON and not CIRCUITPYTHON:
+    raise Exception("Could not import MicroPython or CircuitPython.")
 
 class RGBKeypad():
-    PIN_SDA = 4
-    PIN_SCL = 5
-    PIN_CS = 17
-    PIN_SCK = 18
-    PIN_MOSI = 19
-
+    
     KEYPAD_ADDRESS = 32
+
+    class MPDevice():
+        
+        PIN_SDA = 4
+        PIN_SCL = 5
+        PIN_CS = 17
+        PIN_SCK = 18
+        PIN_MOSI = 19
+
+        def __init__(self):
+            """
+            Class for communicating with the keypad device using
+            MicroPython
+            """
+            # setup i2c
+            self._i2c = machine.I2C(
+                0, 
+                scl=machine.Pin(RGBKeypad.MPDevice.PIN_SCL), 
+                sda=machine.Pin(RGBKeypad.MPDevice.PIN_SDA), 
+                freq=400000
+                )
+
+            # setup spi
+            self._spi = machine.SPI(
+                0, 
+                baudrate=4*1024*1024, 
+                sck=machine.Pin(RGBKeypad.MPDevice.PIN_SCK), 
+                mosi=machine.Pin(RGBKeypad.MPDevice.PIN_MOSI)
+                )
+            
+            # setup cs
+            self._cs = machine.Pin(
+                RGBKeypad.MPDevice.PIN_CS, 
+                machine.Pin.OUT
+                )
+            self._cs.high()
+        
+        def read_keys(self):
+            self._i2c.writeto(RGBKeypad.KEYPAD_ADDRESS, bytearray(1), True)
+            data = self._i2c.readfrom(RGBKeypad.KEYPAD_ADDRESS, 2, False)
+            key_data = int.from_bytes(data, "little")
+            return key_data
+
+        def write_leds(self, led_data):
+            self._cs.low()
+            self._spi.write(led_data)
+            self._cs.high()
 
     class RGBKey():
 
@@ -105,26 +162,9 @@ class RGBKeypad():
 
     def __init__(self, color=(0,0,0), brightness=0.5, auto_update=True):
 
-        # setup i2c
-        self._i2c = I2C(
-            0, 
-            scl=Pin(RGBKeypad.PIN_SCL), 
-            sda=Pin(RGBKeypad.PIN_SDA), 
-            freq=400000
-            )
+        # create the device
+        self._device = RGBKeypad.MPDevice()
 
-        # setup spi
-        self._spi = SPI(
-            0, 
-            baudrate=4*1024*1024, 
-            sck=Pin(RGBKeypad.PIN_SCK), 
-            mosi=Pin(RGBKeypad.PIN_MOSI)
-            )
-        
-        # setup cs
-        self._cs = Pin(RGBKeypad.PIN_CS, Pin.OUT)
-        self._cs.high()
-        
         # setup all the keys before setting auto update
         self.auto_update = False
 
@@ -180,9 +220,7 @@ class RGBKeypad():
         return self._keys
     
     def get_keys_pressed(self):
-        self._i2c.writeto(32, bytearray(1), True)
-        data = self._i2c.readfrom(RGBKeypad.KEYPAD_ADDRESS, 2, False)
-        button_data = int.from_bytes(data, "little")
+        button_data = self._device.read_keys()
         
         # button states
         button_states = []
@@ -206,33 +244,31 @@ class RGBKeypad():
 
             data_pos += 4
 
-        self._cs.low()
-        self._spi.write(led_data)
-        self._cs.high()
+        self._device.write_leds(led_data)
 
     def __getitem__(self, index):
         return self.get_key(index[0], index[1])
 
 
-# from random import randint
-# from utime import sleep
+from random import randint
+from utime import sleep
 
-# keypad = RGBKeypad()
+keypad = RGBKeypad()
 
-# while True:
-#     for x in range(4):
-#         for y in range(4):
-#             key = keypad[x,y]
-#             if key.is_pressed():
+while True:
+    for x in range(4):
+        for y in range(4):
+            key = keypad[x,y]
+            if key.is_pressed():
                 
-#                 key.color = (
-#                     randint(0,255),
-#                     randint(0,255),
-#                     randint(0,255)
-#                     )
-#                 print("key",x,y,"pressed")
+                key.color = (
+                    randint(0,255),
+                    randint(0,255),
+                    randint(0,255)
+                    )
+                print("key",x,y,"pressed")
                 
-#     sleep(0.1)
+    sleep(0.1)
 
 # for i in range(10):
 #     for x in range(4):

@@ -1,6 +1,4 @@
 from random import randint
-from utime import sleep
-from rgbkeypad import RGBKeypad
 
 keypad = RGBKeypad()
 
@@ -17,4 +15,3 @@ while True:
                     )
                 print("key", x, y, "pressed")
                 
-    sleep(0.1)

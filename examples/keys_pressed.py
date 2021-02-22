@@ -1,5 +1,3 @@
-from rgbkeypad import RGBKeypad
-
 keypad = RGBKeypad()
 
 while True:

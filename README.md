@@ -10,7 +10,7 @@ keypad = RGBKeypad()
 # make all the keys red
 keypad.color = (255, 0, 0)
 
-# turn a key red when pressed
+# turn a key blue when pressed
 while True:
     for key in keypad.keys:
         if key.is_pressed():

@@ -21,7 +21,7 @@ while True:
 
 # Status
 
-Beta - version 0.1
+Beta - version 0.1.1
 
 ## Install
 

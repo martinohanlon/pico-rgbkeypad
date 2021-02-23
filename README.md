@@ -127,5 +127,3 @@ Alternatively a list of all the keys pressed status can be obtained using the ke
 keys_pressed = keypad.get_keys_pressed()
 print(keys_pressed)
 ```
-
-## Example

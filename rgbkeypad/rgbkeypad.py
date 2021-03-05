@@ -240,7 +240,7 @@ class RGBKeypad():
 
             Clear is the same as setting the color to black (0, 0, 0).
             """
-            self.color == (0, 0, 0)
+            self.color = (0, 0, 0)
 
         def _update(self):
             if self._keypad.auto_update:

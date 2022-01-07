@@ -1,6 +1,13 @@
 MICROPYTHON = True
 try:
     import machine
+    
+    PIN_SDA = 4
+    PIN_SCL = 5
+    PIN_CS = 17
+    PIN_SCK = 18
+    PIN_MOSI = 19
+
 except ImportError:
     MICROPYTHON = False
 
@@ -9,6 +16,13 @@ try:
     import board
     import busio
     import digitalio
+    
+    PIN_SDA = board.GP4
+    PIN_SCL = board.GP5
+    PIN_CS = board.GP17
+    PIN_SCK = board.GP18
+    PIN_MOSI = board.GP19
+        
 except ImportError:
     CIRCUITPYTHON = False
 
@@ -21,12 +35,6 @@ class RGBKeypad():
 
     class MPDevice():
         
-        PIN_SDA = 4
-        PIN_SCL = 5
-        PIN_CS = 17
-        PIN_SCK = 18
-        PIN_MOSI = 19
-
         def __init__(self):
             """
             Internal class used to communicate with the keypad device when
@@ -35,8 +43,8 @@ class RGBKeypad():
             # setup i2c
             self._i2c = machine.I2C(
                 0, 
-                scl=machine.Pin(RGBKeypad.MPDevice.PIN_SCL), 
-                sda=machine.Pin(RGBKeypad.MPDevice.PIN_SDA), 
+                scl=machine.Pin(PIN_SCL), 
+                sda=machine.Pin(PIN_SDA), 
                 freq=400000
                 )
 
@@ -44,13 +52,13 @@ class RGBKeypad():
             self._spi = machine.SPI(
                 0, 
                 baudrate=4*1024*1024, 
-                sck=machine.Pin(RGBKeypad.MPDevice.PIN_SCK), 
-                mosi=machine.Pin(RGBKeypad.MPDevice.PIN_MOSI)
+                sck=machine.Pin(PIN_SCK), 
+                mosi=machine.Pin(PIN_MOSI)
                 )
             
             # setup cs
             self._cs = machine.Pin(
-                RGBKeypad.MPDevice.PIN_CS, 
+                PIN_CS, 
                 machine.Pin.OUT
                 )
             self._cs.high()
@@ -67,35 +75,37 @@ class RGBKeypad():
             
     class CPDevice():
         
-        PIN_SDA = board.GP4
-        PIN_SCL = board.GP5
-        PIN_CS = board.GP17
-        PIN_SCK = board.GP18
-        PIN_MOSI = board.GP19
+
 
         def __init__(self):
             """
             Internal class used to communicate with the keypad device when
             using CircuitPython.
             """
+            
+            PIN_SDA = board.GP4
+            PIN_SCL = board.GP5
+            PIN_CS = board.GP17
+            PIN_SCK = board.GP18
+            PIN_MOSI = board.GP19
             # setup i2c
             self._i2c = busio.I2C(
-                scl=RGBKeypad.CPDevice.PIN_SCL, 
-                sda=RGBKeypad.CPDevice.PIN_SDA,
+                scl=PIN_SCL, 
+                sda=PIN_SDA,
                 frequency=400000
                 )
             self._i2c.try_lock()
 
             # setup spi
             self._spi = busio.SPI(
-                clock=RGBKeypad.CPDevice.PIN_SCK, 
-                MOSI=RGBKeypad.CPDevice.PIN_MOSI
+                clock=PIN_SCK, 
+                MOSI=PIN_MOSI
                 )
             self._spi.try_lock()
             self._spi.configure(baudrate=4*1024*1024)
             
             # setup cs
-            self._cs = digitalio.DigitalInOut(RGBKeypad.CPDevice.PIN_CS)
+            self._cs = digitalio.DigitalInOut(PIN_CS)
             self._cs.direction = digitalio.Direction.OUTPUT
             self._cs.value = True
         
@@ -415,5 +425,3 @@ class RGBKeypad():
 
     def __getitem__(self, index):
         return self.get_key(index[0], index[1])
-
-

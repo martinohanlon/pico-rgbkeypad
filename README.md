@@ -21,15 +21,29 @@ while True:
 
 # Status
 
-Beta - version 0.1.1
+Beta - version 0.2
 
 ## Install
 
-Copy the [rbgkeypad code](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad/rgbkeypad.py) into your program.
+There are a few options for installing `pico rgbkeypad`:
+
+1. Copy the [rbgkeypad.py code](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad/rgbkeypad.py) into the top of your program.
+
+2. Copy the [rgbkeypad folder](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad)] to the lib folder on your pico (e.g. if you are using CircuitPython)
+
+3. Install the [pico-rgbkeypad package from PyPi](https://pypi.org/project/pico-rbgkeypad) using `upip` or the [Manage Packages tool](https://github.com/thonny/thonny/wiki/InstallingPackages) in [Thonny](https://thonny.org/).
 
 ## Usage
 
 > Below is some typical use cases and examples for using the `RGBKeypad` class. See the [API](API.md) documentation for more information.
+
+Import the `RGBKeypad` class from the `rgbkeypad` module.
+
+**Note** - you do no need to import the module if you copied the `rgbkeypad.py` code directly into your program.
+
+```python
+from rgbkeypad import RGBKeypad
+```
 
 Create a keypad object.
 
@@ -127,3 +141,27 @@ Alternatively a list of all the keys pressed status can be obtained using the ke
 keys_pressed = keypad.get_keys_pressed()
 print(keys_pressed)
 ```
+
+## Deploy
+
+These are instructions for how to deploy the `pico-rgbkeypad` to [PyPI](https://pypi.org/project/pico-rbgkeypad)
+
+1. Install pre-requisites
+
+~~~bash
+pip3 install setuptools twine
+~~~
+
+2. Increment version numbers in `setup.py` and `README.md`
+
+3. Build for deployment
+
+~~~bash
+python setup.py sdist
+~~~
+
+3. Deploy to PyPI
+
+~~~bash
+twine upload dist/* --skip-existing
+~~~

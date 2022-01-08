@@ -29,17 +29,17 @@ There are a few options for installing `pico rgbkeypad`:
 
 1. Copy the [rbgkeypad.py code](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad/rgbkeypad.py) into the top of your program.
 
-2. Copy the [rgbkeypad folder](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad)] to the lib folder on your pico (e.g. if you are using CircuitPython)
+2. Copy the [rgbkeypad folder](https://github.com/martinohanlon/pico-rgbkeypad/blob/main/rgbkeypad) to the lib folder on your pico (useful if you are using CircuitPython).
 
 3. Install the [pico-rgbkeypad package from PyPi](https://pypi.org/project/pico-rbgkeypad) using `upip` or the [Manage Packages tool](https://github.com/thonny/thonny/wiki/InstallingPackages) in [Thonny](https://thonny.org/).
 
 ## Usage
 
-> Below is some typical use cases and examples for using the `RGBKeypad` class. See the [API](API.md) documentation for more information.
+Here you will find some typical use cases and examples for using `rgbkeypad`. See the [API](API.md) documentation for more information.
 
 Import the `RGBKeypad` class from the `rgbkeypad` module.
 
-**Note** - you do no need to import the module if you copied the `rgbkeypad.py` code directly into your program.
+> Note - you do not need to import the module if you copied the `rgbkeypad.py` code directly into your program.
 
 ```python
 from rgbkeypad import RGBKeypad

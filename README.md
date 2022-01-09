@@ -152,7 +152,7 @@ These are instructions for how to deploy the `pico-rgbkeypad` to [PyPI](https://
 pip3 install setuptools twine
 ~~~
 
-2. Increment version numbers in `setup.py` and `README.md`
+2. Increment version number in `setup.py`, `README.md` and `CHANGELOG.MD`
 
 3. Build for deployment
 
